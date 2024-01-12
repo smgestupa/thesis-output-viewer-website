@@ -2,8 +2,7 @@
     let videoStreams = [];
 </script>
 
-<input class="hidden" type="checkbox" id="add-stream-modal">
-<nav class="w-full flex-grow max-w-[20rem] px-5 pt-5 bg-[#87D68D] rounded-t-lg">
+<nav class="w-full flex-grow max-w-[20rem] p-5 bg-[#87D68D] rounded-t-lg">
     <!-- Pages -->
     <section class="[&>*:nth-child(2)]:mt-[0.9375rem] [&>a]:mt-[0.625rem] [&>a:first-child]:mt-0">
         <p class="text-center text-lg font-bold">Pages</p>
@@ -29,7 +28,7 @@
     <section class="[&>*:nth-child(2)]:mt-[0.9375rem] [&>a]:mt-[0.625rem] [&>a:first-child]:mt-0 ">
         <div class="flex gap-x-2 justify-center items-center">
             <p class="text-center text-lg font-bold">Video Streams</p>
-            <label class="cursor-pointer" for="add-stream-modal">
+            <label class="cursor-pointer" for="add-stream-checkbox">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
                 </svg>
@@ -47,7 +46,7 @@
                 </a>
             {/each}
         {:else}
-            <div class="[&>p]:mt-[0.625rem] [&>p:first-child]:mt-0">
+            <div class="[&>p]:mt-[0.625rem] [&>p:first-child]:mt-0 -z-10">
                 {#each Array(5) as _, index}
                     {@const opacity = 1 - (.10 * (index + 5))}
                     <p class="flex items-center gap-[0.625rem] rounded-lg w-full p-[0.625rem] bg-[#BCEBCB]" style:opacity="{opacity}">
