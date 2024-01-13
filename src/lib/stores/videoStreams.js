@@ -5,8 +5,8 @@ export const videoStreams = writable(browser ? localStorage.getItem("videoStream
 
 videoStreams.subscribe((value) => {
     if (browser) {
-        const currVideoStreams = JSON.parse(localStorage.getItem("videoStreams"));
-        localStorage.setItem("videoStreams", JSON.stringify([...currVideoStreams, value]));
-        console.log(currVideoStreams);
+        // const currVideoStreams = JSON.parse(localStorage.getItem("videoStreams") ?? []);
+        // localStorage.setItem("videoStreams", JSON.stringify([...currVideoStreams, value]));
+        // console.log(currVideoStreams);
     }
 });

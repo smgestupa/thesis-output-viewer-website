@@ -11,7 +11,7 @@
     } 
 </script>
 
-<input class="hidden" type="checkbox" id="add-stream-checkbox" checked="true">
+<input class="hidden" type="checkbox" id="add-stream-checkbox">
 <div id="add-stream-modal" class="absolute hidden top-0 w-full h-full px-[3.125rem]">
     <label class="absolute top-0 left-0 block w-full h-full bg-black opacity-50 z-10" for="add-stream-checkbox"></label>
     <form class="w-full h-fit max-w-2xl mx-auto mt-10 border-2 border-white bg-[#87D68D] z-10 p-5 rounded-lg" on:submit|preventDefault={addVideoStream}>
