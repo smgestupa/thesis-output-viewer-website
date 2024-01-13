@@ -1,8 +1,9 @@
 <script>
+    import { onDestroy } from "svelte";
     import { io } from "socket.io-client";
     export let data;
     const { name } = data,
-        socket = io("http://localhost:5000");
+        socket = io("http://localhost:5000", {autoConnect: true});
 
     let loading = true,
         paused = true,
@@ -15,7 +16,7 @@
 
     socket.emit("videostreams_get", name, "");
 
-    socket.on(`${name}_stream`, (data) => {
+    socket.on(`${name}_stream_test`, (data) => {
         const { information } = data;
 
         totalObjects = information["total_objects"];
@@ -40,6 +41,39 @@
         if (data === "stop")
             paused = true;
     });
+
+    const startVideoStream = () => {
+        socket.on(`${name}_stream_test`, (data) => {
+            const { information } = data;
+
+            totalObjects = information["total_objects"];
+            detectedLabels = information["detected_labels"];
+            latency = information["latency"];
+
+            image = image["data"];
+        });
+        paused = false;
+    }
+
+    const pauseVideoStream = () => {
+        socket.off(`${name}_stream_test`);
+        paused = true;
+    }
+
+    const recordVideoStream = async () => {
+        const req = await fetch(`${name}/settings?record=true`);
+        
+        if (req.status === 200) {
+            record = true;
+            consoleLogs = [`Now recording camera ${name}.`, ...consoleLogs];
+        } else {
+            consoleLogs = [`Could not starting recording. Please try again later.`, ...consoleLogs];
+        }
+    }
+
+    onDestroy(() => {
+        socket.disconnect();
+    });
 </script>
 
 <header>
@@ -50,20 +84,20 @@
 <div class="flex-grow mt-[2.0625rem] px-5 pt-5 pb-10 bg-[#87D68D] rounded-t-lg [&>*]:mt-[1.5625rem] [&>*:first-child]:mt-0">
     <!-- Controls -->
     <section class="flex gap-x-5">
-        <button class="block rounded border-b-4 border-[#006600] bg-[#009900] px-6 py-2 font-bold hover:border-[#009900] hover:bg-[#00B800] text-white disabled:border-gray-700 disabled:bg-gray-500" disabled={loading || paused}>
+        <button class="block rounded border-b-4 border-[#006600] bg-[#009900] px-6 py-2 font-bold hover:border-[#009900] hover:bg-[#00B800] text-white disabled:border-gray-700 disabled:bg-gray-500" disabled={loading || !paused} on:click={startVideoStream}>
             Start
         </button>
-        <button class="rounded border-b-4 border-blue-700 bg-blue-500 px-6 py-2 font-bold hover:border-blue-500 hover:bg-blue-400 text-white disabled:border-gray-700 disabled:bg-gray-500" disabled={loading || !paused}>
+        <button class="rounded border-b-4 border-blue-700 bg-blue-500 px-6 py-2 font-bold hover:border-blue-500 hover:bg-blue-400 text-white disabled:border-gray-700 disabled:bg-gray-500" disabled={loading || paused} on:click={pauseVideoStream}>
             Pause
         </button>
-        <button class="rounded border-b-4 border-[#FF5147] bg-[#FF6961] px-6 py-2 font-bold hover:border-[#FF6961] hover:bg-[#FF8B85] text-white disabled:border-gray-700 disabled:bg-gray-500" disabled={loading || !record}>
+        <button class="rounded border-b-4 border-[#FF5147] bg-[#FF6961] px-6 py-2 font-bold hover:border-[#FF6961] hover:bg-[#FF8B85] text-white disabled:border-gray-700 disabled:bg-gray-500" disabled={loading || record} on:click={recordVideoStream}>
             Record
         </button>
     </section>
     <!-- Feed -->
     <div class="flex gap-x-5">
         <img class="bg-black w-full max-w-[50rem] h-[37.5rem]" src={image ? `data:image/jpeg;base64, ${image}` : "/no-stream.jpeg"} alt="">
-        <section class="text-lg">
+        <section class="text-lg flex-grow">
             <p>{paused ? "The video stream is not running or currently paused." : `The modal has detected ${totalObjects} waste objects from the camera.`}</p>
             <ul class="detected-labels grid grid-cols-2 gap-y-5 mt-4 [&>li>span]:mr-4 [&>li>span]:px-2 [&>li>span]:py-1 [&>li>span]:font-bold empty:hidden">
                 {#each detectedLabels as {label, count}}
