@@ -7,7 +7,14 @@
         const streamName = formData.get("add-stream-name");
         const ipAddress = formData.get("add-stream-ip-address");
 
-        $videoStreams = { "name": streamName, "address": ipAddress };
+        if (!streamName || !ipAddress)
+            return; 
+
+        if (JSON.stringify($videoStreams).includes(streamName)) {
+            console.log("Exists!!!");
+        } else {
+            $videoStreams = [{streamName, ipAddress}, ...$videoStreams];
+        }
     } 
 </script>
 
