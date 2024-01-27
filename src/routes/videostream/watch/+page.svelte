@@ -12,6 +12,7 @@
         recording = false,
         totalObjects = 0,
         detectedLabels = {},
+        latency = 0,
         image = "",
         consoleLogs = [];
 
@@ -21,6 +22,7 @@
 
             totalObjects = information["total_objects"];
             detectedLabels = information["detected_labels"];
+            latency = information["latency"];
 
             image = JSON.parse(data)["image"];
         });
@@ -53,6 +55,7 @@
 
             totalObjects = information["total_objects"];
             detectedLabels = information["detected_labels"];
+            latency = information["latency"];
 
             image = JSON.parse(data)["image"];
         });
@@ -109,7 +112,12 @@
     </section>
     <!-- Feed -->
     <div class="flex gap-x-5">
-        <img class="bg-black w-full max-w-[50rem] h-[37.5rem]" src={image ? `data:image/jpeg;base64, ${image}` : "/favicon.png"} alt="">
+        <div class="relative w-full max-w-[50rem] h-[37.5rem]">
+            {#if !paused}
+                <p class="absolute px-2 py-1 text-center bg-black min-w-20 top-0 right-0 mr-2 mt-2 opacity-50">{latency}ms</p>
+            {/if}
+            <img class="bg-black w-full h-full" src={image ? `data:image/jpeg;base64, ${image}` : "/favicon.png"} alt="">
+        </div>
         <section class="text-lg flex-grow">
             <p>{paused ? "The video stream is not running or currently paused." : `The model has detected ${totalObjects} waste objects from the camera.`}</p>
             {#if !paused}
