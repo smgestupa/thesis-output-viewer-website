@@ -12,7 +12,7 @@
         if (!streamName || !ipAddress)
             return; 
 
-        goto(`/videostream/watch/${streamName}`);
+        goto(`/videostream/watch?name=${streamName}&ip=${ipAddress}`);
         
         document.getElementById("watch-stream-checkbox").checked = false;
         form.reset();
