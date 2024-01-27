@@ -112,7 +112,7 @@
     </section>
     <!-- Feed -->
     <div class="flex gap-x-5">
-        <div class="relative w-full max-w-[50rem] h-[37.5rem]">
+        <div class="relative w-full max-w-[50rem] h-[calc((100vw_/_2_-_160px)_*_0.75)] aspect-auto">
             {#if !paused}
                 <p class="absolute px-2 py-1 text-center bg-black min-w-20 top-0 right-0 mr-2 mt-2 opacity-50">{latency}ms</p>
             {/if}
