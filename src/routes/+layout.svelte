@@ -1,11 +1,11 @@
 <script>
 	import '../app.pcss';
 	import Nav from '$lib/components/Nav.svelte';
-	import AddVideoStream from '$lib/components/AddVideoStream.svelte';
+	import WatchVideoStream from '$lib/components/WatchVideoStream.svelte';
 </script>
 
 <!-- Add Video Stream Modal -->
-<AddVideoStream />
+<WatchVideoStream />
 
 <div class="flex flex-grow gap-x-5 px-[3.125rem] pt-[3.125rem]">
 	<Nav />
